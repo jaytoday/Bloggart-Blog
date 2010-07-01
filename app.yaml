@@ -24,7 +24,7 @@ handlers:
   script: deferred.py
   login: admin
 
-- url: /admin/.*
+- url: /admin.*
   script: admin.py
   login: admin
 

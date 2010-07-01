@@ -51,6 +51,7 @@ post_deploy_tasks.append(generate_static_pages([
 
 
 def regenerate_all(previous_version):
+  ver_tuple = 0
   if previous_version:
     ver_tuple = (
       previous_version.bloggart_major,

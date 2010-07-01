@@ -5,7 +5,7 @@ blog_name = 'Patents and Ventures'
 author_name = 'George Levy'
 
 # (Optional) slogan
-slogan = 'Protecting Technology Ideas For 20 Years'
+slogan = 'Helping Entrepreneurs Protect and Profit From Ideas For 20 Years'
 
 # The hostname this site will primarially serve off (used for Atom feeds)
 host = 'http://www.patentsandventures.com'
@@ -35,7 +35,7 @@ sidebars = [
 ]
 
 # Number of entries per page in indexes.
-posts_per_page = 10
+posts_per_page = 1
 
 # The mime type to serve HTML files as.
 html_mime_type = "text/html; charset=utf-8"
@@ -45,7 +45,7 @@ html_mime_type = "text/html; charset=utf-8"
 disqus_forum = None
 
 # Length (in words) of summaries, by default
-summary_length = 250
+summary_length = 25000 #250
 
 # If you want to use Google Analytics, enter your 'web property id' here
 analytics_id = "UA-17201914-1"

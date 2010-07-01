@@ -8,6 +8,23 @@
   {% if config.highlighting_style %}
   <link rel="stylesheet" type="text/css" media="screen" href="{{config.url_prefix}}/static/{{config.theme}}/css/pygments_{{config.highlighting_style}}.css" />
   {% endif %}
+
+		<link rel="stylesheet" media="all" type="text/css" href="{{config.url_prefix}}/static/{{config.theme}}/css/impromptu.css" /> 
+		
+		<style type="text/css">			
+			/*-------------------------------- */
+            div.jqi .jqimessage .field{ padding: 2px 0; }
+			div.jqi .jqimessage .field textarea{ width: 100%; height: 120px; }
+			/*-------------------------------- */
+		</style> 
+		
+		<script type="text/javascript" src="{{config.url_prefix}}/static/{{config.theme}}/js/jquery-1.4.2.min.js"></script> 
+		<script type="text/javascript" src="{{config.url_prefix}}/static/{{config.theme}}/js/jquery-impromptu.3.1.min.js"></script>
+		
+			<script type="text/javascript">
+			{% include "impromptu.js" %} 
+			</script>
+		
   <link rel="alternate" type="application/atom+xml" 
 	href="{% if config.feed_proxy %}
 	        {{ config.feed_proxy }}
@@ -33,7 +50,7 @@
 		<div  id="nav">
 			<ul>
 				<li{% ifequal generator_class "IndexContentGenerator" %} id="current"{% endifequal %}><a href="{{config.url_prefix}}/">Home</a></li>
-        {% block menu %}{% endblock %}
+        {% block menu %}<li><a class="contact_us">Free Consultation</a></li>{% endblock %}
 			</ul>
 		</div>		
 		<div id="header-image"></div> 
@@ -68,12 +85,14 @@
       {% endfor %}
 --> {% endcomment %}
 <div class="sidemenu">
-          <button style="font-size:20px; padding: 10px; cursor:pointer;">Submit A Question</button>
+          <button class="contact_us" style="font-size:20px; padding: 10px; cursor:pointer;">Submit A Question</button>
 
           <ul>
-              <li><a>Contact Us For a Free Consultation</a></li>
-<li><a>TODO: Links to resources (getting started, etc.)</a></li>
-<li><a>TODO: Map of San Diego location</a></li>
+              {% block sidebar %}
+				{% for post in recent_posts %}
+				<li><a href="{{config.url_prefix}}{{post.path}}">{{ post.title|escape }}</a></li>
+				{% endfor %}
+				 {% endblock %}
           </ul>
 </div>
 
@@ -114,8 +133,8 @@
 	<div id="footer-wrapper" class="container_16">
 		<div id="footer-bottom">
 			<p class="bottom-left">			
-			&nbsp; &copy; {{config.author_name}} &nbsp; &nbsp;
-			| <a class="submit_question">Get Your Free Consultation</a> | GLevy@PatentsAndVentures.com | 1 (858) 259-2221												
+			&nbsp; &copy; {{config.author_name}}
+			| <a style="cursor:pointer; font-size:1.1em;"class="contact_us">Contact Us Now For Your Free Consultation</a> | Info@PatentsAndVentures.com | 1-858-259-2226												
 			</p>	
 			<p class="bottom-right" >
 				<a href="{{config.url_prefix}}/">Home</a> |

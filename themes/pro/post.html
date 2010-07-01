@@ -14,13 +14,15 @@
   <div style="font-size:17px;" class="post_content">{{post.rendered}}</div>
   <div style="clear:both; margin: 15px 0;"></div>
   {# <p class="postmeta"><span class="date">{{post.published|date:config.date_format}}</span> </p> #}
-  {% if prev %}
+  {% comment %}
+	{% if prev %}
     <a id="prev" href="{{config.url_prefix}}{{prev.path}}">Previous Post</a>
   {% endif %}
   {% if prev and next %}|{% endif %}
   {% if next %}
     <a id="next" href="{{config.url_prefix}}{{next.path}}">Next Post</a>
   {% endif %}
+	{% endcomment %}
   
   {% if config.disqus_forum %}
     <h3 id="comments">Comments</h3>

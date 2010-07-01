@@ -10,6 +10,7 @@ import fix_path
 import config
 import markup
 import static
+import models
 import utils
 
 
@@ -60,6 +61,18 @@ class ContentGenerator(object):
     raise NotImplementedError()
 
 
+def get_recent_posts():
+    _posts = models.BlogPost.all().order('-published').fetch(200)
+    first_posts = []
+    second_posts = []
+    for post in _posts:
+        if post.path in ['/How-To-Prepare-To-File-Your-Patent']:
+            first_posts.append(post)
+        else:
+            second_posts.append(post)
+    first_posts.extend(second_posts)
+    return first_posts[:10]
+    
 class PostContentGenerator(ContentGenerator):
   """ContentGenerator for the actual blog post itself."""
   
@@ -76,7 +89,6 @@ class PostContentGenerator(ContentGenerator):
   @classmethod
   def get_prev_next(cls, post):
     """Retrieves the chronologically previous and next post for this post""" 
-    import models
     
     q = models.BlogPost.all().order('-published')
     q.filter('published !=', datetime.datetime.max)# Filter drafts out
@@ -103,6 +115,7 @@ class PostContentGenerator(ContentGenerator):
       return
     template_vals = {
         'post': post,
+        'recent_posts': get_recent_posts()
     }
     prev, next = cls.get_prev_next(post)
     if prev is not None:
@@ -164,13 +177,14 @@ class ListingContentGenerator(ContentGenerator):
   @classmethod
   def generate_resource(cls, post, resource, pagenum=1, start_ts=None):
     import models
+    '''
     q = models.BlogPost.all().order('-published')
     q.filter('published <', start_ts or datetime.datetime.max)
     cls._filter_query(resource, q)
-
     posts = q.fetch(config.posts_per_page + 1)
+    '''
+    posts = get_recent_posts()
     more_posts = len(posts) > config.posts_per_page
-
     path_args = {
         'resource': resource,
     }
@@ -181,6 +195,7 @@ class ListingContentGenerator(ContentGenerator):
     template_vals = {
         'generator_class': cls.__name__,
         'posts': posts[:config.posts_per_page],
+        'recent_posts': posts,
         'prev_page': prev_page if pagenum > 1 else None,
         'next_page': next_page if more_posts else None,
     }
@@ -251,7 +266,7 @@ class AtomContentGenerator(ContentGenerator):
     static.set('/feeds/atom.xml', rendered,
                'application/atom+xml; charset=utf-8', indexed=False,
                last_modified=now)
-    if config.hubbub_hub_url:
+    if config.hubbub_hub_url and not utils.Debug():
       cls.send_hubbub_ping(config.hubbub_hub_url)
 
   @classmethod

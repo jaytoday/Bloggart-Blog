@@ -42,6 +42,31 @@ def with_post(fun):
   return decorate
 
 
+
+class QuestionHandler(webapp.RequestHandler):
+  def post(self):
+    question = self.request.get('question')
+    email = self.request.get('email')
+    if '@' not in email:
+        email += '+notvalidaddress@patentsandventures.com'
+    import logging
+    from google.appengine.api import mail
+    self.message = mail.EmailMessage()
+    self.message.sender = 'thelevybreaks@gmail.com'
+    self.message.reply_to = email
+    self.message.subject = 'Free Consultation Request From %s' % email
+    self.message.to = 'glevy@patentsandventures.com' 
+
+    self.message.body = """
+    
+    Reply to %s
+    
+    Message Body:
+
+    %s
+    """ % (email, question)
+    self.message.send()                                        
+                                                  
 class BaseHandler(webapp.RequestHandler):
   def render_to_response(self, template_name, template_vals=None, theme=None):
     if not template_vals:
