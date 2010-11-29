@@ -11,6 +11,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 import fix_path
+import logging
 import aetycoon
 import config
 import utils
@@ -83,7 +84,11 @@ def set(path, body, content_type, indexed=True, **kwargs):
       content_type=content_type,
       indexed=indexed,
       **defaults)
-  content.put()
+  try:
+    content.put()
+  except:
+    logging.critical('Unable to save %s content to datastore: %s' % (path, body) )
+    return content
   memcache.replace(path, db.model_to_protobuf(content).Encode())
   try:
     eta = now.replace(second=0, microsecond=0) + datetime.timedelta(seconds=65)
