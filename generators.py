@@ -5,6 +5,7 @@ import urllib
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.ext import deferred
+import logging
 
 import fix_path
 import config
@@ -104,6 +105,7 @@ class PostContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource, action='post'):
+    logging.info('generating post resource %s' % resource)
     import models
     if not post:
       post = models.BlogPost.get_by_id(resource)
@@ -176,6 +178,7 @@ class ListingContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource, pagenum=1, start_ts=None):
+    logging.info('generating listing resource %s' % resource)
     import models
     '''
     q = models.BlogPost.all().order('-published')

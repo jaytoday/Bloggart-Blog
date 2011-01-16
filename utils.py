@@ -78,6 +78,7 @@ def _get_all_paths():
 
 
 def _regenerate_sitemap():
+  logging.info('temporarily skipping sitemap regen')
   import static
   import gzip
   from StringIO import StringIO
